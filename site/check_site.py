@@ -40,6 +40,9 @@ external = set(); checked = 0
 for page in pages.values():
     for link in page.links:
         url = urlsplit(link)
+        if url.scheme == 'mailto':
+            assert url.path == 'relativityrush@gmail.com', f'Unexpected support address: {link}'
+            external.add(link); continue
         if url.scheme or url.netloc:
             assert url.scheme == 'https' and url.hostname in {'testflight.apple.com', 'www.apple.com', 'privacy.apple.com', 'render.com'}, f'Unexpected public link: {link}'
             external.add(link); continue
@@ -50,6 +53,7 @@ for page in pages.values():
         if url.fragment: assert target in pages and url.fragment in pages[target].ids, f'Broken fragment: {link}'
         checked += 1
 for path in ROOT.rglob('*.svg'): ET.parse(path)
+assert (ROOT / 'app-ads.txt').read_text(encoding='ascii') == 'google.com, pub-4379472219323780, DIRECT, f08c47fec0942fa0\n'
 css = (ROOT / 'assets/style.css').read_text(encoding='utf-8')
 assert 'prefers-reduced-motion' in css and ':focus-visible' in css and '@media' in css
 assert not re.search(r'@import|url\(\s*[\'\"]?https?://', css, re.I), 'Unexpected external styles/assets'
