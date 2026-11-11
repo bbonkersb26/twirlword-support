@@ -1,0 +1,19 @@
+# Public TwirlWord pages only. The game source is maintained separately.
+services:
+  - type: web
+    name: twirlword-support
+    runtime: static
+    rootDir: site
+    buildCommand: python3 check_site.py
+    staticPublishPath: ./public
+    autoDeployTrigger: "off"
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: no-referrer
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'none'"
