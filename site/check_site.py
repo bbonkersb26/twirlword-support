@@ -44,7 +44,7 @@ for page in pages.values():
             assert url.path == 'relativityrush@gmail.com', f'Unexpected support address: {link}'
             external.add(link); continue
         if url.scheme or url.netloc:
-            assert url.scheme == 'https' and url.hostname in {'testflight.apple.com', 'www.apple.com', 'privacy.apple.com', 'render.com'}, f'Unexpected public link: {link}'
+            assert url.scheme == 'https' and url.hostname in {'testflight.apple.com', 'www.apple.com', 'privacy.apple.com', 'render.com', 'policies.google.com'}, f'Unexpected public link: {link}'
             external.add(link); continue
         target = (ROOT / unquote(url.path).lstrip('/') if url.path.startswith('/') else page.path.parent / unquote(url.path)).resolve() if url.path else page.path.resolve()
         assert target.is_relative_to(ROOT.resolve()), f'Link escapes public files: {link}'
